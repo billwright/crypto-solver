@@ -2,9 +2,7 @@ package com.wright.crypto;
 
 import org.junit.Test;
 
-/**
- * Created by derek on 12/21/13.
- */
+
 public class SolverConsoleViewTest {
 
     @Test
@@ -12,4 +10,11 @@ public class SolverConsoleViewTest {
         SolverConsoleView solverConsoleView = new SolverConsoleView(new Solver("ij uifsf"));
         solverConsoleView.printFrequencyTable();
     }
+
+    @Test
+    public void testFrequencyDisplayWithMixedCase() {
+        SolverConsoleView solverConsoleView = new SolverConsoleView(new Solver("This is a LONGER test with Mixed Case"));
+        solverConsoleView.printFrequencyTable();
+    }
+
 }
