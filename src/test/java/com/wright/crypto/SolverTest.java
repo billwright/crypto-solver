@@ -24,4 +24,14 @@ public class SolverTest {
         assertEquals(1, (int)frequencies.get(new Character('C')));
 
     }
+
+    @Test
+    public void guessTest() {
+        Solver solver = new Solver("WHAT'S UP WITH YOU?");
+        assertEquals("____'_ __ ____ ___?", solver.getCurrentGuess());
+
+        solver.makeGuess('W', 'T');
+        assertEquals("T___'_ __ T___ ___?", solver.getCurrentGuess());
+
+    }
 }
