@@ -37,8 +37,7 @@ public class Dictionary {
     }
 
     public boolean containsSubstring(String s, int start) {
-        int l = s.length();
-        int end = start + l;
+        int end = start + s.length();
         for (String word : words) {
             if (word.length() < end) continue;
             if (word.substring(start, end).equals(s)) return true;
