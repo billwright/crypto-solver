@@ -101,21 +101,21 @@ public class Solver {
     }
 
     public String solveByFrequency() {
-        ArrayList<Character> options = new ArrayList<Character>();
+        ArrayList<Character> availableLetters = new ArrayList<Character>();
         for (int i = 0; i < CHARS_BY_EXPECTED_FREQ.length; i++) {
-            options.add(CHARS_BY_EXPECTED_FREQ[i]);
+            availableLetters.add(CHARS_BY_EXPECTED_FREQ[i]);
         }
 
-        solveByFrequency(0, options);
+        solveByFrequency(0, availableLetters);
         return getCurrentGuess();
     }
 
-    private boolean solveByFrequency(int i, ArrayList<Character> options) {
-        if (i >= sortedFrequencies.size() || options.size() == 0) return isCurrentGuessPossible();
+    private boolean solveByFrequency(int letterFrequencyIndex, ArrayList<Character> availableLetters) {
+        if (letterFrequencyIndex >= sortedFrequencies.size() || availableLetters.size() == 0) return isCurrentGuessPossible();
         else {
-            Character cipherChar = sortedFrequencies.get(i).getKey();
-            for (int j = 0; j < options.size(); j++) {
-                Character plainCharGuess = options.get(j);
+            Character cipherChar = sortedFrequencies.get(letterFrequencyIndex).getKey();
+            for (int j = 0; j < availableLetters.size(); j++) {
+                Character plainCharGuess = availableLetters.get(j);
                 makeGuess(cipherChar, plainCharGuess);
 
                 String currentGuess = getCurrentGuess();
@@ -123,10 +123,10 @@ public class Solver {
                 boolean isCurrentGuessPossible = isCurrentGuessPossible();
                 if (!isCurrentGuessPossible) continue;
 
-                ArrayList<Character> newOptions = (ArrayList<Character>)options.clone();
+                ArrayList<Character> newOptions = (ArrayList<Character>)availableLetters.clone();
                 newOptions.remove(plainCharGuess);
 
-                boolean didWorkOut = solveByFrequency(i+1, newOptions);
+                boolean didWorkOut = solveByFrequency(letterFrequencyIndex+1, newOptions);
                 if (didWorkOut) return true;
             }
 
