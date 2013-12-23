@@ -3,6 +3,7 @@ package com.wright.crypto;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import static org.junit.Assert.*;
@@ -57,9 +58,9 @@ public class SolverTest {
         String originalPlainText = "THIS IS A COOL TEST THAT WILL GUESS AT THE ANSWER BY ANALYZING FREQUENCIES -- AND ONLY FREQUENCIES. :)";
         Solver solver = new Solver(Encoder.rotation(originalPlainText, 5));
 
-        String plainText = solver.solveByFrequency();
-        System.out.println(plainText);
-        assertEquals(originalPlainText, plainText);
+        ArrayList<String> plainTextSolutions = solver.solveByFrequency();
+        System.out.println(plainTextSolutions);
+        assertTrue(plainTextSolutions.contains(originalPlainText));
     }
 
     @Test
@@ -67,8 +68,17 @@ public class SolverTest {
         String originalPlainText = "THIS IS A COOL TEST";
         Solver solver = new Solver(Encoder.rotation(originalPlainText, 5));
 
-        String plainText = solver.solveByFrequency();
-        System.out.println(plainText);
-        assertEquals(originalPlainText, plainText);
+        ArrayList<String> plainTextSolutions = solver.solveByFrequency();
+        System.out.println(plainTextSolutions);
+        assertTrue(plainTextSolutions.contains(originalPlainText));
+    }
+
+    @Test
+    public void solveByFrequenciesDec23() {
+        String cipherText = "UO'Z OGX BWX WUAGO BD OGX PXQM VGXW VX QHH QKO Q HUOOHX WUKXM, VX ZFUHX Q HUOOHX XQZUXM, VX KGXXM Q HUOOHX FBMX.";
+        Solver solver = new Solver(cipherText);
+
+        ArrayList<String> solutions = solver.solveByFrequency();
+        System.out.println(solutions);
     }
 }

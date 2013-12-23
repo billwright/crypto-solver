@@ -92,6 +92,14 @@ public class Solver {
         keyGuess.put(cipherChar, plainChar);
     }
 
+    public void clearGuess(Character cipherChar) {
+        keyGuess.remove(cipherChar);
+    }
+
+    public void clearGuess(char cipherChar) {
+        keyGuess.remove(new Character(cipherChar));
+    }
+
     public void makeGuessesByFrequency() {
         int i = 0;
         for (Map.Entry<Character, Integer> entry : sortedFrequencies) {
@@ -100,17 +108,18 @@ public class Solver {
         }
     }
 
-    public String solveByFrequency() {
+    public ArrayList<String> solveByFrequency() {
         ArrayList<Character> availableLetters = new ArrayList<Character>();
         for (int i = 0; i < CHARS_BY_EXPECTED_FREQ.length; i++) {
             availableLetters.add(CHARS_BY_EXPECTED_FREQ[i]);
         }
 
-        solveByFrequency(0, availableLetters);
-        return getCurrentGuess();
+        ArrayList<String> solutions = new ArrayList<String>();
+        solveByFrequency(0, availableLetters, solutions);
+        return solutions;
     }
 
-    private boolean solveByFrequency(int letterFrequencyIndex, ArrayList<Character> availableLetters) {
+    private boolean solveByFrequency(int letterFrequencyIndex, ArrayList<Character> availableLetters, ArrayList<String> solutions) {
         if (letterFrequencyIndex >= sortedFrequencies.size() || availableLetters.size() == 0) return isCurrentGuessPossible();
         else {
             Character cipherChar = sortedFrequencies.get(letterFrequencyIndex).getKey();
@@ -126,10 +135,11 @@ public class Solver {
                 ArrayList<Character> newOptions = (ArrayList<Character>)availableLetters.clone();
                 newOptions.remove(plainCharGuess);
 
-                boolean didWorkOut = solveByFrequency(letterFrequencyIndex+1, newOptions);
-                if (didWorkOut) return true;
+                boolean didWorkOut = solveByFrequency(letterFrequencyIndex+1, newOptions, solutions);
+                if (didWorkOut) solutions.add(getCurrentGuess());
             }
 
+            clearGuess(cipherChar);
             return false;
         }
     }
