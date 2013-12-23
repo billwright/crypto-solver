@@ -9,12 +9,14 @@ public class Solver {
     private HashMap<Character, Integer> frequencies;
     private HashMap<Character, Character> keyGuess;
     private ArrayList<Map.Entry<Character, Integer>> sortedFrequencies;
+    private Dictionary dictionary;
 
     private static final char[] CHARS_BY_EXPECTED_FREQ = new char[]{'E', 'T', 'A', 'O', 'I', 'N', 'S', 'H', 'R', 'D', 'L', 'C', 'U', 'M', 'W', 'F', 'G', 'Y', 'P', 'B', 'V', 'K', 'J', 'X', 'Q', 'Z'};
 
     public Solver(String encryptedText) {
         cipherText = encryptedText.toUpperCase(); //Use all uppercase letters
         keyGuess = new HashMap<Character, Character>();
+        dictionary = new Dictionary();
 
         //Calculate frequencies
         frequencies = new HashMap<Character, Integer>();
@@ -30,7 +32,7 @@ public class Solver {
             }
         }
 
-        sortedFrequencies = new ArrayList< Map.Entry<Character, Integer>>();
+        sortedFrequencies = new ArrayList<Map.Entry<Character, Integer>>();
         for (Map.Entry<Character, Integer> currEntry : frequencies.entrySet()) {
             sortedFrequencies.add(currEntry);
         }
@@ -61,9 +63,31 @@ public class Solver {
         return guess;
     }
 
+    public boolean isCurrentGuessPossible() {
+        String curGuess = getCurrentGuess();
+        String curWordPattern = "";
+
+        for (int i = 0; i < curGuess.length(); i++) {
+            char c = curGuess.charAt(i);
+            if ((c >= 'A' && c <= 'Z') || c == '_' || c == '\'') {
+                curWordPattern += c;
+            } else {
+                if (curWordPattern.length() > 0) {
+                    boolean isCurWordPossible = dictionary.isWordPossible(curWordPattern);
+                    if (!isCurWordPossible) return false;
+                }
+
+                curWordPattern = "";
+            }
+        }
+
+        return true;
+    }
+
     public void makeGuess(char cipherChar, char plainChar) {
         keyGuess.put(new Character(cipherChar), new Character(plainChar));
     }
+
     public void makeGuess(Character cipherChar, Character plainChar) {
         keyGuess.put(cipherChar, plainChar);
     }

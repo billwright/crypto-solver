@@ -40,4 +40,15 @@ public class SolverTest {
         solver.makeGuessesByFrequency();
         System.out.println(solver.getCurrentGuess());
     }
+
+    @Test
+    public void isCurrentGuessPossible() {
+        Solver solver = new Solver(Encoder.rotation("WHAT'S UP?", 1));
+
+        solver.makeGuess('X', 'W');
+        assertTrue(solver.isCurrentGuessPossible());
+
+        solver.makeGuess('B', 'X');
+        assertTrue(!solver.isCurrentGuessPossible());
+    }
 }
