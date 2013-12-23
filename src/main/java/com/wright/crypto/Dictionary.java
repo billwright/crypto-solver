@@ -2,12 +2,9 @@ package com.wright.crypto;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.HashSet;
 
-/**
- * @author Danny
- * @date 12/21/13 9:16 PM
- */
 public class Dictionary {
 
     private static final String DEFAULT_FILE_NAME = "/words.txt";
@@ -23,12 +20,20 @@ public class Dictionary {
         BufferedReader reader = null;
         try {
             reader = new BufferedReader(new FileReader(path));
-            String line = null;
+            String line;
             while ((line = reader.readLine()) != null) {
                 words.add(line.toUpperCase());
             }
-            reader.close();
         } catch (Throwable e) {
+            System.out.println("ERROR: I could not read the dictionary file: " + fileName);
+        } finally {
+            try {
+                if (reader != null) {
+                    reader.close();
+                }
+            } catch (IOException ex) {
+                System.out.println("An error occurred trying to close the dictionary file: " + ex.getMessage());
+            }
         }
     }
 
