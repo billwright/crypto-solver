@@ -50,6 +50,7 @@ public class Dictionary {
      * contained in the dictionary.
      * The pattern should be in all uppercase with missing
      * letters specified as underscores. Example: T_R_NN_S_U__S
+     *
      * @param   pattern   the pattern in question (as to whether it can be a valid word).
      * @return  true if the pattern can be a valid word, false otherwise.
      */
