@@ -32,6 +32,12 @@ public class SolverTest {
 
         solver.makeGuess('W', 'T');
         assertEquals("T___'_ __ T___ ___?", solver.getCurrentGuess());
+    }
 
+    @Test
+    public void guessByFreqTest() {
+        Solver solver = new Solver("THIS IS A COOL TEST THAT WILL GUESS AT THE ANSWER BY ANALYZING FREQUENCIES -- AND ONLY FREQUENCIES. :)");
+        solver.makeGuessesByFrequency();
+        System.out.println(solver.getCurrentGuess());
     }
 }

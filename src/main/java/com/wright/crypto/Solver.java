@@ -1,13 +1,14 @@
 package com.wright.crypto;
 
 
-import java.util.HashMap;
+import java.util.*;
 
 public class Solver {
 
     private String cipherText;
     private HashMap<Character, Integer> frequencies;
     private HashMap<Character, Character> keyGuess;
+    private ArrayList<Map.Entry<Character, Integer>> sortedFrequencies;
 
     private static final char[] CHARS_BY_EXPECTED_FREQ = new char[]{'E', 'T', 'A', 'O', 'I', 'N', 'S', 'H', 'R', 'D', 'L', 'C', 'U', 'M', 'W', 'F', 'G', 'Y', 'P', 'B', 'V', 'K', 'J', 'X', 'Q', 'Z'};
 
@@ -28,6 +29,17 @@ public class Solver {
                 frequencies.put(c, 1);
             }
         }
+
+        sortedFrequencies = new ArrayList< Map.Entry<Character, Integer>>();
+        for (Map.Entry<Character, Integer> currEntry : frequencies.entrySet()) {
+            sortedFrequencies.add(currEntry);
+        }
+        Collections.sort(sortedFrequencies, new Comparator<Map.Entry<Character, Integer>>() {
+            public int compare(Map.Entry<Character, Integer> characterIntegerEntry, Map.Entry<Character, Integer> characterIntegerEntry2) {
+                return characterIntegerEntry.getValue().compareTo(characterIntegerEntry2.getValue());
+            }
+        });
+        Collections.reverse(sortedFrequencies);
     }
 
     public String getCurrentGuess() {
@@ -52,9 +64,16 @@ public class Solver {
     public void makeGuess(char cipherChar, char plainChar) {
         keyGuess.put(new Character(cipherChar), new Character(plainChar));
     }
-
     public void makeGuess(Character cipherChar, Character plainChar) {
         keyGuess.put(cipherChar, plainChar);
+    }
+
+    public void makeGuessesByFrequency() {
+        int i = 0;
+        for (Map.Entry<Character, Integer> entry : sortedFrequencies) {
+            makeGuess(entry.getKey(), new Character(CHARS_BY_EXPECTED_FREQ[i]));
+            i++;
+        }
     }
 
     public String solve() {
