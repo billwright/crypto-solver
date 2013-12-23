@@ -12,7 +12,7 @@ public class Encoder {
         for (int i = 0; i < plainText.length(); i++) {
             char c = plainText.charAt(i);
             if (c < 'A' || c > 'Z') cipherText += c;
-            else cipherText += (char)((c + rotationNum - 'A') % ('Z' - 'A') + 'A');
+            else cipherText += (char) ((c + rotationNum - 'A') % ('Z' - 'A' + 1) + 'A');
         }
 
         return cipherText;

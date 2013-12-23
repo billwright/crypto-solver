@@ -100,6 +100,40 @@ public class Solver {
         }
     }
 
+    public String solveByFrequency() {
+        ArrayList<Character> options = new ArrayList<Character>();
+        for (int i = 0; i < CHARS_BY_EXPECTED_FREQ.length; i++) {
+            options.add(CHARS_BY_EXPECTED_FREQ[i]);
+        }
+
+        solveByFrequency(0, options);
+        return getCurrentGuess();
+    }
+
+    private boolean solveByFrequency(int i, ArrayList<Character> options) {
+        if (i >= sortedFrequencies.size() || options.size() == 0) return isCurrentGuessPossible();
+        else {
+            Character cipherChar = sortedFrequencies.get(i).getKey();
+            for (int j = 0; j < options.size(); j++) {
+                Character plainCharGuess = options.get(j);
+                makeGuess(cipherChar, plainCharGuess);
+
+                String currentGuess = getCurrentGuess();
+
+                boolean isCurrentGuessPossible = isCurrentGuessPossible();
+                if (!isCurrentGuessPossible) continue;
+
+                ArrayList<Character> newOptions = (ArrayList<Character>)options.clone();
+                newOptions.remove(plainCharGuess);
+
+                boolean didWorkOut = solveByFrequency(i+1, newOptions);
+                if (didWorkOut) return true;
+            }
+
+            return false;
+        }
+    }
+
     public String solve() {
         return "hi there";
     }

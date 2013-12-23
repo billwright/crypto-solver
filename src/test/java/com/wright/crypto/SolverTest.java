@@ -51,4 +51,14 @@ public class SolverTest {
         solver.makeGuess('B', 'X');
         assertTrue(!solver.isCurrentGuessPossible());
     }
+
+    @Test
+    public void solveByFrequencies() {
+        String cipherText = "THIS IS A COOL TEST THAT WILL GUESS AT THE ANSWER BY ANALYZING FREQUENCIES -- AND ONLY FREQUENCIES. :)";
+        Solver solver = new Solver(Encoder.rotation(cipherText, 5));
+
+        String plainText = solver.solveByFrequency();
+        System.out.println(plainText);
+        assertEquals(cipherText, plainText);
+    }
 }
